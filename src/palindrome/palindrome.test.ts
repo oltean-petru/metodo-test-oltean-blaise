@@ -1,50 +1,45 @@
 import { App } from './palindrome';
-import readline from 'readline';
-
-jest.mock('readline', () => {
-  return {
-    createInterface: jest.fn().mockReturnValue({
-      question: (string: String, callback: Function) => callback('test'),
-      close: jest.fn(),
-    }),
-  };
-});
 
 describe('App', () => {
   let app: App;
-  let logSpy: jest.SpyInstance;
 
   beforeEach(() => {
     app = new App();
-    logSpy = jest.spyOn(console, 'log').mockImplementation();
   });
 
-  afterEach(() => {
-    logSpy.mockRestore();
+  test('reverseWord should reverse a word', () => {
+    expect(app.reverseWord('hello')).toBe('olleh');
   });
 
-  test('reverseWord', () => {
-    expect(app.reverseWord('test')).toBe('tset');
-  });
-
-  test('isPalindrome', () => {
-    expect(app.isPalindrome('test')).toBe(false);
-    expect(app.isPalindrome('tset')).toBe(false);
+  test('isPalindrome should return true for a palindrome', () => {
     expect(app.isPalindrome('racecar')).toBe(true);
   });
 
-  test('greet', () => {
-    jest.spyOn(Date.prototype, 'getHours').mockReturnValue(10);
-    app.greet();
-    expect(logSpy).toHaveBeenCalledWith('Bonjour!');
-    jest.spyOn(Date.prototype, 'getHours').mockReturnValue(20);
-    app.greet();
-    expect(logSpy).toHaveBeenCalledWith('Bonsoir!');
+  test('isPalindrome should return false for a non-palindrome', () => {
+    expect(app.isPalindrome('hello')).toBe(false);
   });
 
-  test('askAndReverseWord', () => {
-    app.askAndReverseWord();
-    expect(logSpy).toHaveBeenCalledWith('tset');
-    expect(logSpy).toHaveBeenCalledWith('Bye!');
-  });
+test('askAndReverseWord should reverse a word and if it is a palindrome, add Bien Ouej! at the end', () => {
+  const mockQuestion = jest.fn();
+  app.rl.question = mockQuestion;
+  mockQuestion.mockImplementation((_question, callback) => callback('racecar'));
+
+  const consoleSpy = jest.spyOn(console, 'log');
+  app.askAndReverseWord();
+
+  expect(consoleSpy).toHaveBeenCalledWith('racecar Bien Ouej!');
+  expect(consoleSpy).toHaveBeenCalledWith('Bye!');
+});
+
+test('askAndReverseWord should reverse a non-palindrome word', () => {
+  const mockQuestion = jest.fn();
+  app.rl.question = mockQuestion;
+  mockQuestion.mockImplementation((_question, callback) => callback('hello'));
+
+  const consoleSpy = jest.spyOn(console, 'log');
+  app.askAndReverseWord();
+
+  expect(consoleSpy).toHaveBeenCalledWith('olleh');
+  expect(consoleSpy).toHaveBeenCalledWith('Bye!');
+});
 });

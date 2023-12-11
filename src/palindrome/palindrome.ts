@@ -1,7 +1,7 @@
 import readline from 'readline';
 
 export class App {
-  private rl: readline.Interface;
+  public rl: readline.Interface;
 
   constructor() {
     this.rl = readline.createInterface({
