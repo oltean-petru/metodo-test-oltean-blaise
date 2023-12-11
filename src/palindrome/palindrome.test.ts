@@ -1,8 +1,7 @@
 import { App } from './palindrome';
 
-const app = new App();
-
 function testReverseWord() {
+  const app = new App();
   const result = app.reverseWord('hello');
   if (result !== 'olleh') {
     throw new Error(`Expected 'olleh', but got '${result}'`);
@@ -10,9 +9,12 @@ function testReverseWord() {
 }
 
 function testIsPalindrome() {
-  const result = app.isPalindrome('hello');
-  if (result) {
-    throw new Error(`Expected 'false', but got '${result}'`);
+  const app = new App();
+  if (!app.isPalindrome('radar')) {
+    throw new Error(`Expected 'radar' to be a palindrome`);
+  }
+  if (app.isPalindrome('hello')) {
+    throw new Error(`Expected 'hello' not to be a palindrome`);
   }
 }
 
