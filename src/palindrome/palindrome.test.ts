@@ -1,22 +1,50 @@
 import { App } from './palindrome';
+import readline from 'readline';
 
-function testReverseWord() {
-  const app = new App();
-  const result = app.reverseWord('hello');
-  if (result !== 'olleh') {
-    throw new Error(`Expected 'olleh', but got '${result}'`);
-  }
-}
+jest.mock('readline', () => {
+  return {
+    createInterface: jest.fn().mockReturnValue({
+      question: (string: String, callback: Function) => callback('test'),
+      close: jest.fn(),
+    }),
+  };
+});
 
-function testIsPalindrome() {
-  const app = new App();
-  if (!app.isPalindrome('radar')) {
-    throw new Error(`Expected 'radar' to be a palindrome`);
-  }
-  if (app.isPalindrome('hello')) {
-    throw new Error(`Expected 'hello' not to be a palindrome`);
-  }
-}
+describe('App', () => {
+  let app: App;
+  let logSpy: jest.SpyInstance;
 
-testReverseWord();
-testIsPalindrome();
+  beforeEach(() => {
+    app = new App();
+    logSpy = jest.spyOn(console, 'log').mockImplementation();
+  });
+
+  afterEach(() => {
+    logSpy.mockRestore();
+  });
+
+  test('reverseWord', () => {
+    expect(app.reverseWord('test')).toBe('tset');
+  });
+
+  test('isPalindrome', () => {
+    expect(app.isPalindrome('test')).toBe(false);
+    expect(app.isPalindrome('tset')).toBe(false);
+    expect(app.isPalindrome('racecar')).toBe(true);
+  });
+
+  test('greet', () => {
+    jest.spyOn(Date.prototype, 'getHours').mockReturnValue(10);
+    app.greet();
+    expect(logSpy).toHaveBeenCalledWith('Bonjour!');
+    jest.spyOn(Date.prototype, 'getHours').mockReturnValue(20);
+    app.greet();
+    expect(logSpy).toHaveBeenCalledWith('Bonsoir!');
+  });
+
+  test('askAndReverseWord', () => {
+    app.askAndReverseWord();
+    expect(logSpy).toHaveBeenCalledWith('tset');
+    expect(logSpy).toHaveBeenCalledWith('Bye!');
+  });
+});
