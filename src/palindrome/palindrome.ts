@@ -1,6 +1,6 @@
 import readline from 'readline';
 
-class App {
+export class App {
   private rl: readline.Interface;
 
   constructor() {
@@ -20,14 +20,18 @@ class App {
     }
   }
 
+  reverseWord(word: string): string {
+    return word.split('').reverse().join('');
+  }
+
+  isPalindrome(word: string): boolean {
+    return word === this.reverseWord(word);
+  }
+
   askAndReverseWord() {
     this.rl.question('Mot?: ', (word) => {
-      const reversedWord = word.split('').reverse().join('');
-      if (word === reversedWord) {
-        console.log(`${reversedWord} Bien Ouej!`);
-      } else {
-        console.log(`${reversedWord}`);
-      }
+      const reversedWord = this.reverseWord(word);
+      this.isPalindrome(word) ? console.log(`${reversedWord} Bien Ouej!`) : console.log(`${reversedWord}`);
       console.log('Bye!');
       this.rl.close();
     });
