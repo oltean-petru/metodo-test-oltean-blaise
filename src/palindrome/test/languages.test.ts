@@ -10,12 +10,12 @@ describe("Languages", () => {
         [new FrenchLang(), TimeOfDay.Afternoon, Expressions.BONAPRESMIDI],
         [new FrenchLang(), TimeOfDay.Evening, Expressions.BONNESOIREE],
         [new FrenchLang(), TimeOfDay.Night, Expressions.BONNENUIT],
-        [new FrenchLang(), TimeOfDay.Inconnu, Expressions.BONMATIN],
+        [new FrenchLang(), TimeOfDay.Unknown, Expressions.BONMATIN],
         [new EnglishLang(), TimeOfDay.Morning, Expressions.GOODMORNING],
         [new EnglishLang(), TimeOfDay.Afternoon, Expressions.GOODAFTERNOON],
         [new EnglishLang(), TimeOfDay.Evening, Expressions.GOODEVENING],
         [new EnglishLang(), TimeOfDay.Night, Expressions.GOODNIGHT],
-        [new EnglishLang(), TimeOfDay.Inconnu, Expressions.GOODMORNING]
+        [new EnglishLang(), TimeOfDay.Unknown, Expressions.GOODMORNING]
     ])("En %s on salue le %s par '%s'",
         (language: LanguageInterface, moment: TimeOfDay, output: string) => {
         expect(language.Greet(moment)).toBe(output)

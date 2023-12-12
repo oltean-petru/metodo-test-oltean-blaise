@@ -8,7 +8,9 @@ export class FrenchLang implements LanguageInterface {
     }
 
     public Greet(moment: TimeOfDay): string {
-        return Expressions.BONJOUR;
+        if(moment == TimeOfDay.Evening || moment == TimeOfDay.Night)
+        return Expressions.BONSOIR;
+    return Expressions.BONJOUR;
     }
 
     public Congratulate(): string {

@@ -8,6 +8,18 @@ export class EnglishLang implements LanguageInterface {
     }
 
     public Greet(moment: TimeOfDay): string {
+        if(moment == TimeOfDay.Morning)
+            return Expressions.GOODMORNING;
+
+        if(moment == TimeOfDay.Afternoon)
+            return Expressions.GOODAFTERNOON;
+
+        if(moment == TimeOfDay.Evening)
+            return Expressions.GOODEVENING;
+
+        if(moment == TimeOfDay.Night)
+            return Expressions.GOODNIGHT;
+
         return Expressions.HELLO;
     }
 
