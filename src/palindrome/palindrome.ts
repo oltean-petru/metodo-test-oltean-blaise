@@ -1,47 +1,37 @@
+import { EnglishLang } from './englishLang';
+import { FrenchLang } from './frenchLang';
+import { TimeOfDay } from './timeOfDay';
+import { LanguageInterface } from './language.interface';
 import readline from 'readline';
+import * as os from 'os';
 
-export class App {
+export class Palindrome {
   public rl: readline.Interface;
+  private readonly _language: LanguageInterface;
+  private readonly _moment: TimeOfDay;
 
-  constructor() {
+  constructor(
+    language: LanguageInterface,
+    moment: TimeOfDay
+  ) {
     this.rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout
     });
+    this._language = language;
+    this._moment = moment;
   }
+  public Verify(input: string): string {
+    let reversed = input.split('').reverse().join('');
 
-  greet() {
-    const date = new Date();
-    const hour = date.getHours();
-    if (hour >= 6 && hour <= 18) {
-      console.log(`Bonjour!`);
-    } else {
-      console.log(`Bonsoir!`);
-    }
-  }
+    let output = this._language.Greet(TimeOfDay.Morning) + os.EOL + reversed + os.EOL;
 
-  reverseWord(word: string): string {
-    return word.split('').reverse().join('');
-  }
+    if (reversed == input)
+    output += this._language.Congratulate() + os.EOL;
 
-  isPalindrome(word: string): boolean {
-    return word === this.reverseWord(word);
-  }
-
-  askAndReverseWord() {
-    this.rl.question('Mot?: ', (word) => {
-      const reversedWord = this.reverseWord(word);
-      this.isPalindrome(word) ? console.log(`${reversedWord} Bien Ouej!`) : console.log(`${reversedWord}`);
-      console.log('Bye!');
-      this.rl.close();
-    });
-  }
-
-  run() {
-    this.greet();
-    this.askAndReverseWord();
+    return output + this._language.Greet_Bye();
   }
 }
 
-const app = new App();
-app.run();
+// const app = new Palindrome(new FrenchLang());
+// console.log(app.Verify("radar"));
