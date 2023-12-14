@@ -53,7 +53,6 @@ describe("test works", () => {
         for (let tod of timeOfDay)
             for(let string of strings)
                 cases.push([tod, string])
-
         return cases;
     }
 
@@ -62,19 +61,20 @@ describe("test works", () => {
         'ET que nous sommes le %s ' +
         'QUAND on saisit une chaîne %s ' +
         'ALORS les salutations de cette langue à ce moment de la journée sont envoyées avant toute réponse',
-        (timoOfDay: TimeOfDay, string: string) => {
+        (timeOfDay: TimeOfDay, string: string) => {
             let languageFake = new LanguageFake();
 
             let verifier =
                 new PalindromeVerifierBuilder()
                     .HavingLanguage(languageFake)
-                    .HavingTimeOfDay(timoOfDay)
+                    .HavingTimeOfDay(timeOfDay)
                     .Build();
 
             let res = verifier.Verify(string);
 
+
             let firstLine = res.split(os.EOL)[0];
-            let output = languageFake.Greet(timoOfDay);
+            let output = languageFake.Greet(timeOfDay);
             expect(firstLine).toEqual(output)
         });
 

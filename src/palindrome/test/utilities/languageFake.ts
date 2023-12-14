@@ -12,6 +12,6 @@ export class LanguageFake implements LanguageInterface {
     }
 
     Greet_Bye(): string {
-        return "byeBye";
+        return "Goodbye";
     }
 }
